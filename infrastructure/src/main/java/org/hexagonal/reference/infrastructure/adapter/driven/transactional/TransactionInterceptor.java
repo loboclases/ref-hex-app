@@ -49,6 +49,7 @@ public class TransactionInterceptor implements MethodInterceptor {
       @Override
       public Object doInTransaction(TransactionStatus status) {
         Object result = invocation.proceed();
+//        Note: The Switch Pattern Matching is in preview mode in Java 17, so it will need to be enabled, otherwise this will not work
         switch (result){
           case Either eitherResult->{if(eitherResult.isLeft()) status.setRollbackOnly();}
           case Validation validationResult->{if(validationResult.isInvalid()) status.setRollbackOnly();}
