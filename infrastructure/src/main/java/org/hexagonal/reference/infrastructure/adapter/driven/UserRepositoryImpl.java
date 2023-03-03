@@ -1,8 +1,5 @@
 package org.hexagonal.reference.infrastructure.adapter.driven;
 
-import static io.vavr.API.$;
-import static io.vavr.API.Match;
-
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import java.util.List;
@@ -10,8 +7,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hexagonal.reference.domain.factory.UserFactory;
-import org.hexagonal.reference.domain.model.error.Error;
 import org.hexagonal.reference.domain.model.User;
+import org.hexagonal.reference.domain.model.error.Error;
 import org.hexagonal.reference.domain.model.error.Error.BusinessError.UserNotFound;
 import org.hexagonal.reference.domain.model.error.Error.TechnicalError;
 import org.hexagonal.reference.domain.port.driven.UserRepository;
