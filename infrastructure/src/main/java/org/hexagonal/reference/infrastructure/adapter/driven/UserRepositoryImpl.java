@@ -57,7 +57,8 @@ public class UserRepositoryImpl implements UserRepository {
     entity.setAge(user.getAge().getValue());
     entity.setName(user.getUserName());
     entity.setEmail(user.getEmail().getValue());
-    return Try.of(() -> userRepository.save(entity))
+    return Try.of(() ->userRepository.save(entity)
+        )
         .toEither()
         .<Error>mapLeft(exception -> new TechnicalError(
             "Error saving user %s due to error %s".formatted(user, exception.getMessage()),

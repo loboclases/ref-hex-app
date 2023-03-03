@@ -24,6 +24,7 @@ public interface UserRepository {
    * @param user the user
    * @return the either
    */
+  @UseCase
   Either<Error,User> saveUser(User user);
 
   /**

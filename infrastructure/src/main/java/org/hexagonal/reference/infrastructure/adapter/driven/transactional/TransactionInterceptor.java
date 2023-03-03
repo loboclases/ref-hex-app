@@ -1,5 +1,8 @@
 package org.hexagonal.reference.infrastructure.adapter.driven.transactional;
 
+import io.vavr.control.Either;
+import io.vavr.control.Validation;
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +48,14 @@ public class TransactionInterceptor implements MethodInterceptor {
       @SneakyThrows
       @Override
       public Object doInTransaction(TransactionStatus status) {
-        return invocation.proceed();
+        Object result = invocation.proceed();
+        switch (result){
+          case Either eitherResult->{if(eitherResult.isLeft()) status.setRollbackOnly();}
+          case Validation validationResult->{if(validationResult.isInvalid()) status.setRollbackOnly();}
+          case Try tryResult->{if(tryResult.isFailure()) status.setRollbackOnly();}
+          default -> {}
+        }
+        return result;
       }
     });
   }
