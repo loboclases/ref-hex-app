@@ -42,6 +42,4 @@ public interface UserRepository {
    * @return the either
    */
   Either<Error,User> findById(Long id);
-
-
 }

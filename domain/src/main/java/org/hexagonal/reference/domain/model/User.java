@@ -18,7 +18,6 @@ import org.hexagonal.reference.domain.specification.StringNotEmpty;
  */
 @Data
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-
 public class User {
 
   private final String userName;
