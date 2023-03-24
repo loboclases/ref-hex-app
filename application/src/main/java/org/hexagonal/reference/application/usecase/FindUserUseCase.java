@@ -4,7 +4,7 @@ package org.hexagonal.reference.application.usecase;
 import io.vavr.control.Either;
 import java.util.Optional;
 import org.hexagonal.reference.application.usecase.dto.UserDTO;
-import org.hexagonal.reference.application.usecase.query.GetUserQueryById;
+import org.hexagonal.reference.application.usecase.query.GetUserByIdQuery;
 import org.hexagonal.reference.application.usecase.query.GetUserQueryByName;
 import org.hexagonal.reference.domain.model.error.Error;
 
@@ -27,6 +27,6 @@ public interface FindUserUseCase {
    * @param getUserQuery the get user query
    * @return the either
    */
-  Either<Error, UserDTO> findUserById(GetUserQueryById getUserQuery);
+  Either<Error, UserDTO> findUserById(GetUserByIdQuery getUserQuery);
 
 }

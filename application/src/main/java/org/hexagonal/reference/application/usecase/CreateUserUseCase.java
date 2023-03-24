@@ -2,7 +2,6 @@ package org.hexagonal.reference.application.usecase;
 
 
 import io.vavr.control.Either;
-import java.util.List;
 import org.hexagonal.reference.application.usecase.command.CreateUserCommand;
 import org.hexagonal.reference.application.usecase.dto.UserDTO;
 import org.hexagonal.reference.domain.model.error.Error;

@@ -1,8 +1,8 @@
 package org.hexagonal.reference.infrastructure.adapter.driven.transactional;
 
 import io.vavr.control.Either;
-import io.vavr.control.Validation;
 import io.vavr.control.Try;
+import io.vavr.control.Validation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

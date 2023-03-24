@@ -1,19 +1,18 @@
 package org.hexagonal.reference.application.usecase.command;
 
 import io.vavr.control.Validation;
-import java.util.List;
 import java.util.function.Function;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hexagonal.reference.application.specification.ValidEmail;
+import org.hexagonal.reference.domain.model.error.Error;
 import org.hexagonal.reference.domain.model.error.Error.ValidationErrors;
+import org.hexagonal.reference.domain.model.error.ValidationError;
 import org.hexagonal.reference.domain.model.error.ValidationError.InvalidAge;
 import org.hexagonal.reference.domain.model.error.ValidationError.InvalidEmail;
 import org.hexagonal.reference.domain.model.error.ValidationError.InvalidName;
 import org.hexagonal.reference.domain.specification.PositiveNumber;
-import org.hexagonal.reference.application.specification.ValidEmail;
-import org.hexagonal.reference.domain.model.error.Error;
-import org.hexagonal.reference.domain.model.error.ValidationError;
 import org.hexagonal.reference.domain.specification.StringNotEmpty;
 
 /**

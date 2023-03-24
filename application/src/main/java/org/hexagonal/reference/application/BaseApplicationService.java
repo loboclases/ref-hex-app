@@ -1,8 +1,6 @@
 package org.hexagonal.reference.application;
 
 import io.vavr.control.Either;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,18 +8,17 @@ import org.hexagonal.reference.application.usecase.CreateUserUseCase;
 import org.hexagonal.reference.application.usecase.FindUserUseCase;
 import org.hexagonal.reference.application.usecase.command.CreateUserCommand;
 import org.hexagonal.reference.application.usecase.dto.UserDTO;
-import org.hexagonal.reference.application.usecase.query.GetUserQueryById;
+import org.hexagonal.reference.application.usecase.query.GetUserByIdQuery;
 import org.hexagonal.reference.application.usecase.query.GetUserQueryByName;
 import org.hexagonal.reference.domain.factory.UserFactory;
 import org.hexagonal.reference.domain.model.User;
 import org.hexagonal.reference.domain.model.error.Error;
-import org.hexagonal.reference.domain.model.error.ValidationError;
 import org.hexagonal.reference.domain.port.driven.UseCase;
 import org.hexagonal.reference.domain.port.driven.UserRepository;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ApplicationService implements CreateUserUseCase, FindUserUseCase {
+public class BaseApplicationService implements CreateUserUseCase, FindUserUseCase {
 
   private final UserFactory userFactory;
   private final UserRepository userRepository;
@@ -55,7 +52,7 @@ public class ApplicationService implements CreateUserUseCase, FindUserUseCase {
    */
   @Override
   @UseCase
-  public Either<Error, UserDTO> findUserById(GetUserQueryById getUserQuery) {
+  public Either<Error, UserDTO> findUserById(GetUserByIdQuery getUserQuery) {
     return userRepository.findById(getUserQuery.getId()).map(user -> mapToDto(user));
   }
 

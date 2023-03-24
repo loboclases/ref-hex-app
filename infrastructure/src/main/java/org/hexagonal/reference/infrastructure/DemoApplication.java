@@ -1,9 +1,7 @@
 package org.hexagonal.reference.infrastructure;
 
-import org.hexagonal.reference.infrastructure.configuration.ApplicationConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 
 /**
  * The type Curso application.
@@ -11,7 +9,6 @@ import org.springframework.context.annotation.Import;
  * @author joseluis.anton
  */
 @SpringBootApplication
-@Import(ApplicationConfiguration.class)
 public class DemoApplication {
 
   /**

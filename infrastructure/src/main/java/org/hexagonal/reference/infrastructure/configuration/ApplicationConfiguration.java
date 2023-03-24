@@ -1,15 +1,19 @@
 package org.hexagonal.reference.infrastructure.configuration;
 
 
-import org.hexagonal.reference.application.ApplicationService;
+import org.hexagonal.reference.application.BaseApplicationService;
+import org.hexagonal.reference.application.handler.ApplicationService;
 import org.hexagonal.reference.domain.factory.UserFactory;
 import org.hexagonal.reference.domain.factory.UserFactoryImpl;
 import org.hexagonal.reference.domain.port.driven.UserRepository;
+import org.hexagonal.reference.infrastructure.bus.query.Registry;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -20,9 +24,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaRepositories("org.hexagonal.reference.infrastructure.persistence.repository")
 @EntityScan(" org.hexagonal.reference.infrastructure.persistence.model")
-@EnableAspectJAutoProxy
-@ComponentScan("org.hexagonal.reference")
+@EnableAspectJAutoProxy(proxyTargetClass=true)
+@ComponentScan(value = "org.hexagonal.reference",includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION,classes = ApplicationService.class))
 public class ApplicationConfiguration {
+
+
 
 
   /**
@@ -32,11 +38,15 @@ public class ApplicationConfiguration {
    * @return the application service
    */
   @Bean
-  public ApplicationService applicationCursoService(UserRepository userRepository) {
+  public BaseApplicationService applicationCursoService(UserRepository userRepository) {
 
-    return new ApplicationService(userFactory(), userRepository);
+    return new BaseApplicationService(userFactory(), userRepository);
   }
 
+  @Bean
+  public Registry registry(ApplicationContext applicationContext){
+    return new Registry(applicationContext);
+  }
 
   /**
    * User factory user factory.
