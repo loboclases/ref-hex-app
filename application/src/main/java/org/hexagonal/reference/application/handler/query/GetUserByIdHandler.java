@@ -1,6 +1,7 @@
 package org.hexagonal.reference.application.handler.query;
 
 import io.vavr.control.Either;
+import lombok.RequiredArgsConstructor;
 import org.hexagonal.reference.application.handler.ApplicationService;
 import org.hexagonal.reference.application.usecase.GetUserByIdUseCase;
 import org.hexagonal.reference.application.usecase.dto.UserDTO;
@@ -11,20 +12,19 @@ import org.hexagonal.reference.domain.port.driven.UserRepository;
 
 /**
  * The type Get user by id handler.
- *
- * This is an alternative way to build application services using query handlers instead of application services
- * This way the query input is decoupled from the logic that performs the query itself allowing multiple implementations
+ * <p>
+ * This is an alternative way to build application services using query handlers instead of
+ * application services This way the query input is decoupled from the logic that performs the query
+ * itself allowing multiple implementations
  *
  * @author joseluis.anton
  */
-//@RequiredArgsConstructor
-  @ApplicationService
+@RequiredArgsConstructor
+@ApplicationService
 public class GetUserByIdHandler implements GetUserByIdUseCase {
-  private  UserRepository userRepository;
 
-  public GetUserByIdHandler(UserRepository userRepository){
-    this.userRepository=userRepository;
-  }
+  private final UserRepository userRepository;
+
   /**
    * {@inheritDoc}
    */
@@ -35,6 +35,7 @@ public class GetUserByIdHandler implements GetUserByIdUseCase {
   public Either<Error, UserDTO> handle(GetUserByIdQuery query) {
     return userRepository.findById(query.getId()).map(user -> mapToDto(user));
   }
+
   private UserDTO mapToDto(User user) {
     return UserDTO.builder().name(user.getUserName()).id(user.getId().getValue())
         .age(user.getAge().getValue()).email(user.getEmail().getValue()).build();
