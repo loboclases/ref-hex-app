@@ -1,5 +1,6 @@
 package org.hexagonal.reference.infrastructure.adapter.driving;
 
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.hexagonal.reference.application.usecase.CreateUserUseCase;
 import org.hexagonal.reference.application.usecase.FindUserUseCase;
@@ -10,7 +11,7 @@ import org.hexagonal.reference.application.usecase.query.GetUserQueryByName;
 import org.hexagonal.reference.infrastructure.adapter.model.UserResource;
 import org.hexagonal.reference.infrastructure.bus.command.SpringCommandBus;
 import org.hexagonal.reference.infrastructure.bus.query.SpringQueryBus;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,12 +46,12 @@ public class UserRestAdapter {
             id)
         .toEither()
         .flatMap(query ->findUserUseCase.findUserById(query))
-        .mapLeft(error ->
-            ResponseEntity.badRequest().body(error)
+        .mapLeft(ErrorHandler::handleError
         )
-        .fold(error -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(error),
-            data -> ResponseEntity.ok(
-                UserResource.builder().age(data.getAge())
+        .fold(error -> ApiResultUtils.createFailureResponse(error, URI.create("/bus/"+id)),
+
+            data -> ApiResultUtils.createSuccessResponse(
+                HttpStatusCode.valueOf(200),UserResource.builder().age(data.getAge())
                     .name(data.getName()).email(data.getEmail())
                     .id(data.getId())
                     .build()));
@@ -67,15 +68,18 @@ public class UserRestAdapter {
             id)
         .toEither()
         .<UserDTO>flatMap(query ->springQueryBus.execute(query))
-        .mapLeft(error ->
-            ResponseEntity.badRequest().body(error)
+        .mapLeft(
+            ErrorHandler::handleError
         )
-        .fold(error -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(error),
-            data -> ResponseEntity.ok(
-                UserResource.builder().age(data.getAge())
+        .fold(error -> ApiResultUtils.createFailureResponse(error, URI.create("/bus/"+id)),
+
+            data -> ApiResultUtils.createSuccessResponse(
+                HttpStatusCode.valueOf(200),UserResource.builder().age(data.getAge())
                     .name(data.getName()).email(data.getEmail())
                     .id(data.getId())
-                    .build()));
+                    .build()
+            )
+        );
   }
 
   /**
@@ -91,12 +95,15 @@ public class UserRestAdapter {
     .toEither()
         .flatMap(query->findUserUseCase.findUserByName(query))
         .mapLeft(ErrorHandler::handleError)
-        .fold(error ->ErrorHandler.handleError(error.getBody()),
-            data -> ResponseEntity.ok(data.map(user->UserResource.builder().age(user.getAge())
-                .name(user.getName()).email(user.getEmail())
-                .id(user.getId())
-                .build()))
-                );
+        .fold(error ->ApiResultUtils.createFailureResponse(error, URI.create("")),
+            data ->
+                ApiResultUtils.createSuccessResponse(
+                    HttpStatusCode.valueOf(200),data.map(user->UserResource.builder().age(user.getAge())
+                        .name(user.getName()).email(user.getEmail())
+                        .id(user.getId())
+                        .build())
+                )
+        );
 
   }
 
@@ -113,11 +120,12 @@ public class UserRestAdapter {
         userResource.getAge(), userResource.getEmail()).toEither()
         .flatMap(command->this.createUserUseCase.createUser(command))
         .mapLeft(ErrorHandler::handleError)
-        .fold(error -> ErrorHandler.handleError(error.getBody()),savedUser->ResponseEntity.ok(
-            UserResource.builder().age(savedUser.getAge())
+        .fold(error -> ApiResultUtils.createFailureResponse(error, URI.create("/")),savedUser->ApiResultUtils.createSuccessResponse(
+            HttpStatusCode.valueOf(201),UserResource.builder().age(savedUser.getAge())
                 .name(savedUser.getName()).email(savedUser.getEmail())
                 .id(savedUser.getId())
-                .build()));
+                .build())
+            );
   }
   /**
    * Create user response entity.
@@ -132,7 +140,8 @@ public class UserRestAdapter {
             userResource.getAge(), userResource.getEmail()).toEither()
         .flatMap(command->this.springCommandBus.execute(command))
         .mapLeft(ErrorHandler::handleError)
-        .fold(error -> ErrorHandler.handleError(error.getBody()),savedUser->ResponseEntity.status(201).build());
+        .fold(error ->ApiResultUtils.createFailureResponse(error, URI.create("/bus/")),savedUser->ApiResultUtils.createSuccessResponse(
+            HttpStatusCode.valueOf(201),savedUser));
   }
 
 }

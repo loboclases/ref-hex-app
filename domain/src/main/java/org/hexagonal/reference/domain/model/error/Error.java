@@ -28,7 +28,7 @@ public sealed interface Error permits Error.BusinessError,
   /**
    * The type Technical error.
    */
-  record TechnicalError(String msg, Throwable cause) implements Error {
+  record TechnicalError(String msg, String origin, Throwable cause) implements Error {
   }
 }
 

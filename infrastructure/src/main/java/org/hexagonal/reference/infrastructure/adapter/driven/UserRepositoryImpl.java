@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
         .toEither()
         .<Error>mapLeft(exception -> new TechnicalError(
             "Error searching user with id %s due to error &s".formatted(username,
-                exception.getMessage()),
+                exception.getMessage()),"Data Base",
             exception)
         ).map(entity -> Optional.ofNullable(entity).map(user ->
             userFactory.createUser(user.getName(), user.getEmail(), user.getAge(), user.getId())
@@ -58,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository {
         )
         .toEither()
         .<Error>mapLeft(exception -> new TechnicalError(
-            "Error saving user %s due to error %s".formatted(user, exception.getMessage()),
+            "Error saving user %s due to error %s".formatted(user, exception.getMessage()),"Data Base",
             exception)
         ).map(savedUser -> userFactory.createUser(savedUser.getName(), savedUser.getEmail(),
             savedUser.getAge(), savedUser.getId()).get());
@@ -80,7 +80,7 @@ public class UserRepositoryImpl implements UserRepository {
             exception ->
                 new TechnicalError(
                     "Error, user with name %s could not be found due to error %s".formatted(
-                        username, exception.getMessage()),
+                        username, exception.getMessage()),"Data Base",
                     exception)).filter(entityOpt -> null != entityOpt).<Void>map(user -> {
           userRepository.delete(user.get());
           return null;
@@ -98,7 +98,7 @@ public class UserRepositoryImpl implements UserRepository {
             "Could not find user with id %s due to some error %s".formatted(id, e.getMessage())))
         .toEither()
         .<Error>mapLeft(exception -> new TechnicalError(
-            "Error searching user with id %s due to error &s".formatted(id, exception.getMessage()),
+            "Error searching user with id %s due to error &s".formatted(id, exception.getMessage()),"Data Base",
             exception)
         ).filter(entityOpt -> entityOpt.isPresent()).map(user -> user.get().map(
             foundUser -> userFactory.createUser(foundUser.getName(), foundUser.getEmail(),
