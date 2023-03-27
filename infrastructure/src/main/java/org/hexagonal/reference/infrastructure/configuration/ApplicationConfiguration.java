@@ -6,7 +6,8 @@ import org.hexagonal.reference.application.handler.ApplicationService;
 import org.hexagonal.reference.domain.factory.UserFactory;
 import org.hexagonal.reference.domain.factory.UserFactoryImpl;
 import org.hexagonal.reference.domain.port.driven.UserRepository;
-import org.hexagonal.reference.infrastructure.bus.query.Registry;
+import org.hexagonal.reference.infrastructure.bus.command.CommandHandlerRegistry;
+import org.hexagonal.reference.infrastructure.bus.query.QueryHandlerRegistry;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -44,10 +45,13 @@ public class ApplicationConfiguration {
   }
 
   @Bean
-  public Registry registry(ApplicationContext applicationContext){
-    return new Registry(applicationContext);
+  public QueryHandlerRegistry queryHandlerRegistry(ApplicationContext applicationContext){
+    return new QueryHandlerRegistry(applicationContext);
   }
-
+  @Bean
+  public CommandHandlerRegistry commandHandlerRegistry(ApplicationContext applicationContext){
+    return new CommandHandlerRegistry(applicationContext);
+  }
   /**
    * User factory user factory.
    *

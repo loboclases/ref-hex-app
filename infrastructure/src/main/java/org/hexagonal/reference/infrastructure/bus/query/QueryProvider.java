@@ -14,7 +14,6 @@ public class QueryProvider<H extends QueryHandler<?, ?>> {
   private final ApplicationContext applicationContext;
   private final Lazy<H> queryProvider;
 
-  private Class<H> type;
   /**
    * Instantiates a new Query provider.
    *
@@ -23,7 +22,6 @@ public class QueryProvider<H extends QueryHandler<?, ?>> {
    */
   QueryProvider(ApplicationContext applicationContext, Class<H> type) {
     this.applicationContext = applicationContext;
-    this.type=type;
     queryProvider=Lazy.of(()->applicationContext.getBean(type));
   }
 

@@ -8,18 +8,19 @@ import org.springframework.stereotype.Component;
 
 /**
  * The type Spring query bus.
+ * @author joseluis.anton
  */
 @Component
 @RequiredArgsConstructor
 public class SpringQueryBus implements QueryBus {
 
-  private final Registry registry;
+  private final QueryHandlerRegistry querydHandlerRegistry;
 
   /**
    * {@inheritDoc}
    */
   @Override
   public <R, Q extends Query> R execute(Q query) {
-    return ((QueryHandler<R, Q>)registry.get(query.getClass())).handle(query);
+    return ((QueryHandler<R, Q>) querydHandlerRegistry.get(query.getClass())).handle(query);
   }
 }

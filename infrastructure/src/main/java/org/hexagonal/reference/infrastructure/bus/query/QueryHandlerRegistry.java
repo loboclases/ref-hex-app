@@ -12,7 +12,7 @@ import org.springframework.core.GenericTypeResolver;
  *
  * @author joseluis.anton
  */
-public class Registry {
+public class QueryHandlerRegistry {
   private Map<Class<? extends Query>, QueryProvider> providerMap = new HashMap<>();
 
   /**
@@ -20,7 +20,7 @@ public class Registry {
    *
    * @param applicationContext the application context
    */
-  public Registry(ApplicationContext applicationContext) {
+  public QueryHandlerRegistry(ApplicationContext applicationContext) {
     String[] names = applicationContext.getBeanNamesForType(QueryHandler.class);
     for (String name : names) {
       register(applicationContext, name);

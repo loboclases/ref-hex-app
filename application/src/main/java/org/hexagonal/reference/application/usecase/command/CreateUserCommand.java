@@ -5,6 +5,7 @@ import java.util.function.Function;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hexagonal.reference.application.bus.command.Command;
 import org.hexagonal.reference.application.specification.ValidEmail;
 import org.hexagonal.reference.domain.model.error.Error;
 import org.hexagonal.reference.domain.model.error.Error.ValidationErrors;
@@ -20,7 +21,7 @@ import org.hexagonal.reference.domain.specification.StringNotEmpty;
  */
 @Data
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateUserCommand {
+public class CreateUserCommand implements Command {
 
   private final String username;
   private final Integer age;

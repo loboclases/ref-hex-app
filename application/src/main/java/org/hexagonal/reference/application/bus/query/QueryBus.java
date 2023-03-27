@@ -6,10 +6,10 @@ package org.hexagonal.reference.application.bus.query;
 public interface QueryBus {
 
   /**
-   * Executes the query passed as parameter.
+   * Executes the query passed as argument.
    *
    * @param <R>   the type of returned value
-   * @param <Q>   the type of query parameter
+   * @param <Q>   the type of query argument
    * @param query the query object
    * @return the returned value provided by the query handler in charge to handle the query Q
    */

@@ -8,6 +8,7 @@ import org.hexagonal.reference.application.usecase.dto.UserDTO;
 import org.hexagonal.reference.application.usecase.query.GetUserByIdQuery;
 import org.hexagonal.reference.application.usecase.query.GetUserQueryByName;
 import org.hexagonal.reference.infrastructure.adapter.model.UserResource;
+import org.hexagonal.reference.infrastructure.bus.command.SpringCommandBus;
 import org.hexagonal.reference.infrastructure.bus.query.SpringQueryBus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class UserRestAdapter {
   private final FindUserUseCase findUserUseCase;
   private final CreateUserUseCase createUserUseCase;
   private final SpringQueryBus springQueryBus;
+  private final SpringCommandBus springCommandBus;
 
   /**
    * Find user by id response entity.
@@ -116,6 +118,21 @@ public class UserRestAdapter {
                 .name(savedUser.getName()).email(savedUser.getEmail())
                 .id(savedUser.getId())
                 .build()));
+  }
+  /**
+   * Create user response entity.
+   *
+   * @param userResource the user resource
+   * @return the response entity
+   */
+  @PostMapping("/bus/")
+  public ResponseEntity<?> createUserByQueryBus(@RequestBody UserResource userResource) {
+    return CreateUserCommand.validateAndCreate(
+            userResource.getName(),
+            userResource.getAge(), userResource.getEmail()).toEither()
+        .flatMap(command->this.springCommandBus.execute(command))
+        .mapLeft(ErrorHandler::handleError)
+        .fold(error -> ErrorHandler.handleError(error.getBody()),savedUser->ResponseEntity.status(201).build());
   }
 
 }
