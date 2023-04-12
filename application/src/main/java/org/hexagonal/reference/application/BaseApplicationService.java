@@ -32,7 +32,8 @@ public class BaseApplicationService implements CreateUserUseCase, FindUserUseCas
     return userFactory.createUser(
             createUserCommand.getUsername(), createUserCommand.getEmail(), createUserCommand.getAge(),
             0l).
-        flatMap(command -> userRepository.saveUser(command)).map(user -> mapToDto(user));
+        flatMap(user -> userRepository.saveUser(user))
+        .map(user -> mapToDto(user));
   }
 
   /**
