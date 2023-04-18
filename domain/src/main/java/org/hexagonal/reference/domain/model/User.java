@@ -9,7 +9,7 @@ import org.hexagonal.reference.domain.model.error.ValidationError.InvalidName;
 import org.hexagonal.reference.domain.model.vo.Age;
 import org.hexagonal.reference.domain.model.vo.Email;
 import org.hexagonal.reference.domain.model.vo.Id;
-import org.hexagonal.reference.domain.specification.StringNotEmpty;
+import org.hexagonal.reference.domain.specification.NotEmptyString;
 
 /**
  * The type User.
@@ -36,7 +36,7 @@ public class User {
    */
   public static Validation<ValidationError, User> validateThenCreate(
       final String username, final Age age, final Email email, final Id id) {
-    return new StringNotEmpty().isSatisfiedBy(username) ? Validation.valid(new User(username, age, email,id))
+    return new NotEmptyString().isSatisfiedBy(username) ? Validation.valid(new User(username, age, email,id))
         : Validation.invalid(
             new InvalidName(username));
 

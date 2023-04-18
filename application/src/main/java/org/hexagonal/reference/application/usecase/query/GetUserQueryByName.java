@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.hexagonal.reference.domain.model.error.Error;
 import org.hexagonal.reference.domain.model.error.Error.ValidationErrors;
 import org.hexagonal.reference.domain.model.error.ValidationError.InvalidName;
-import org.hexagonal.reference.domain.specification.StringNotEmpty;
+import org.hexagonal.reference.domain.specification.NotEmptyString;
 
 /**
  * The type Get user query.
@@ -27,7 +27,7 @@ public class GetUserQueryByName {
    */
   public static Validation<Error, GetUserQueryByName> validateAndCreate(
       final String name) {
-    return new StringNotEmpty().isSatisfiedBy(name) ? Validation.valid(new GetUserQueryByName(name))
+    return new NotEmptyString().isSatisfiedBy(name) ? Validation.valid(new GetUserQueryByName(name))
         : Validation.invalid(new ValidationErrors(Arrays.asList(new InvalidName(name))));
   }
 

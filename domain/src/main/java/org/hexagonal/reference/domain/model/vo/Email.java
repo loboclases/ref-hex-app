@@ -25,7 +25,7 @@ public class Email {
   public static Validation<ValidationError, Email> validateAndCreate(String email) {
     //this is a business validation relative only to Email
     //it is guaranteed by application layer that the input argument has already a valid email format
-    return email.endsWith("@epo.org") ? Validation.valid(new Email(email))
+    return email.endsWith("@altia.es") ? Validation.valid(new Email(email))
         : Validation.invalid(new InvalidEmail(email));
   }
 }

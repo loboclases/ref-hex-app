@@ -14,7 +14,7 @@ import org.hexagonal.reference.domain.model.error.ValidationError.InvalidAge;
 import org.hexagonal.reference.domain.model.error.ValidationError.InvalidEmail;
 import org.hexagonal.reference.domain.model.error.ValidationError.InvalidName;
 import org.hexagonal.reference.domain.specification.PositiveNumber;
-import org.hexagonal.reference.domain.specification.StringNotEmpty;
+import org.hexagonal.reference.domain.specification.NotEmptyString;
 
 /**
  * The type Create user command.
@@ -45,7 +45,7 @@ public class CreateUserCommand implements Command {
   }
 
   private static Validation<ValidationError, String> isUsernameValid(final String username) {
-    return new StringNotEmpty().isSatisfiedBy(username) ? Validation.valid(username)
+    return new NotEmptyString().isSatisfiedBy(username) ? Validation.valid(username)
         : Validation.invalid(new InvalidName(username));
   }
 

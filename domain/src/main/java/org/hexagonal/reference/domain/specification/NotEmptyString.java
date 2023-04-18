@@ -1,9 +1,9 @@
 package org.hexagonal.reference.domain.specification;
 
 /**
- * The type String not empty.
+ * The specification Not empty string.
  */
-public class StringNotEmpty implements AbstractSpecification<String>{
+public class NotEmptyString implements AbstractSpecification<String>{
 
   /**
    *
